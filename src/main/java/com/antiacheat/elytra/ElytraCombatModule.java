@@ -380,27 +380,39 @@ public class ElytraCombatModule {
     /**
      * İhlal limitini aşan oyuncuyu cezalandırır
      */
-    private void punishPlayer(Player player, String reason) {
-        // Ana thread'de çalıştır
-        Bukkit.getScheduler().runTask(plugin, () -> {
-            // Burada ban/kick mantığınızı ekleyin
-            // Örnek: player.kickPlayer("§c[AntiCheat] " + reason);
+private void punishPlayer(Player player, String reason) {
+    // Ana thread'de çalıştırılması zorunludur (Komutlar ve Kick işlemleri için)
+    Bukkit.getScheduler().runTask(plugin, () -> {
+        // 1. Config'den komutu al (Eğer config.yml kullanıyorsan)
+        // Örnek: punish-command: "kick %player% %reason%"
+        String commandTemplate = plugin.getConfig().getString("punish-command");
+        
+        if (commandTemplate != null && !commandTemplate.isEmpty()) {
+            // Placeholder'ları değiştir (%player% ve %reason%)
+            String finalCommand = commandTemplate
+                .replace("%player%", player.getName())
+                .replace("%reason%", reason);
             
-            Bukkit.getLogger().severe(String.format(
-                "[ElytraCombat] CEZA: %s sebebiyle %s cezalandırıldı!",
-                player.getName(), reason
-            ));
-            
-            // Tüm sunucuya bildirim (opsiyonel)
-            Bukkit.broadcastMessage(String.format(
-                "§c[AntiCheat] §f%s §7adlı oyuncu §c%s §7sebebiyle cezalandırıldı.",
-                player.getName(), reason
-            ));
-            
-            // Violation'ı sıfırla (tekrar ceza alabilmesi için)
-            violationMap.remove(player.getUniqueId());
-        });
-    }
+            // Komutu KONSOL olarak çalıştır
+            Bukkit.dispatchCommand(Bukkit.getConsoleSender(), finalCommand);
+        } else {
+            // Eğer config boşsa varsayılan olarak kick atalım ki sistem boş kalmasın
+            player.kickPlayer("§c[AntiCheat] §f" + reason);
+        }
+
+        // 2. Log ve Duyuru (Zaten sendeydi)
+        Bukkit.getLogger().severe(String.format("[ElytraCombat] CEZA: %s - %s", player.getName(), reason));
+        
+        Bukkit.broadcastMessage(String.format(
+            "§c[AntiCheat] §f%s §7adlı oyuncu §c%s §7sebebiyle cezalandırıldı.",
+            player.getName(), reason
+        ));
+        
+        // 3. Verileri temizle
+        violationMap.remove(player.getUniqueId());
+        combatDataMap.remove(player.getUniqueId());
+    });
+}
 
     /**
      * Belirli aralıklarla violation sayılarını azaltan görev
