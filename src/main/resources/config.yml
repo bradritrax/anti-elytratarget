@@ -40,7 +40,8 @@ general:
   # {player} = Oyuncu adi
   # {reason} = Cezalandirma sebebi
   # Bos birakirsaniz sadece kick yapilir
-  punishment-command: "kick {player} &c[AntiCheat] {reason}"
+# %player% oyuncu adıyla, %reason% ise tespit sebebiyle değişir.
+  punish-command: "kick %player% &c[AntiCheat] &f%reason%"
   
   # Broadcast mesaji (tum sunucuya duyuru)
   # true = Ceza alinca herkes gorur
