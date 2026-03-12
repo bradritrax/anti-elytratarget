@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Proje Bilgileri -->
+    <groupId>com.antiacheat</groupId>
+    <artifactId>elytra-anticheat</artifactId>
+    <version>1.0.0</version>
+    <packaging>jar</packaging>
+
+    <name>ElytraAntiCheat</name>
+    <description>Minecraft 1.17.1 ElytraTarget ve Rocket Macro korumasi</description>
+
+    <!-- Java 17 Kullanimi -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spigot.version>1.17.1-R0.1-SNAPSHOT</spigot.version>
+        <protocollib.version>4.7.0</protocollib.version>
+    </properties>
+
+    <!-- Repository'ler -->
+    <repositories>
+        <!-- Spigot API -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        
+        <!-- ProtocolLib (dmulloy2 repo) -->
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>https://repo.dmulloy2.net/repository/public/</url>
+        </repository>
+        
+        <!-- Sonatype (gerekli dependency'ler icin) -->
+        <repository>
+            <id>sonatype</id>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+    <!-- Bagimliliklar -->
+    <dependencies>
+        <!-- Spigot API (1.17.1) -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- ProtocolLib (Packet islemleri icin) -->
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>${protocollib.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Annotation API (Java 17 ile gerekli) -->
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- Build Ayarlari -->
+    <build>
+        <defaultGoal>clean package</defaultGoal>
+        <finalName>${project.name}-${project.version}</finalName>
+        
+        <!-- Kaynak dizinleri -->
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>plugin.yml</include>
+                    <include>config.yml</include>
+                </includes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <!-- Java 17 Compiler -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>17</source>
+                    <target>17</target>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <!-- Shade Plugin (dependency'leri jar icine almak icin - GEREKLI DEGIL) -->
+            <!-- ProtocolLib sunucuda oldugu icin shade etmeye gerek yok -->
+            
+            <!-- Jar Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <!-- Gelistirici Bilgileri -->
+    <developers>
+        <developer>
+            <name>AntiCheat Developer</name>
+        </developer>
+    </developers>
+
+</project>

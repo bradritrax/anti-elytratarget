@@ -1,0 +1,57 @@
+# ============================================
+# ElytraAntiCheat Yapilandirma Dosyasi
+# Minecraft 1.17.1 - ElytraTarget & Rocket Macro Korumasi
+# ============================================
+
+# SAS (Swap-Attack-Swap) Tespiti
+# Slot degisimi -> Saldir -> Slot degisimi (80ms icinde)
+sas:
+  # Tespit esigi (milisaniye)
+  # 80ms = Cok hizli slot degisimi (otomasyon sinyali)
+  threshold-ms: 80
+  
+  # Ceza oncesi maksimum ihlal sayisi
+  # Bu sayiya ulasinca oyuncu cezalandirilir
+  max-violations: 5
+
+# Anti-Rocket Combat Tespiti
+# Roket kullanimi -> Saldir (50ms icinde)
+rocket:
+  # Tespit esigi (milisaniye)
+  # 50ms = Insanustu hiz (makro sinyali)
+  # Normal insan refleksi: 150-300ms
+  threshold-ms: 50
+  
+  # Ceza oncesi maksimum ihlal sayisi
+  max-violations: 5
+
+# Genel Ayarlar
+general:
+  # Ihlal azalma suresi (saniye)
+  # Bu surede yeni ihlal yoksa violation sayisi 1 azalir
+  violation-decay-seconds: 30
+  
+  # Detayli loglama modu
+  # true = Her paket islemi loglanir (DEBUG)
+  # false = Sadece tespitler loglanir
+  debug-mode: false
+  
+  # Ceza komutu
+  # {player} = Oyuncu adi
+  # {reason} = Cezalandirma sebebi
+  # Bos birakirsaniz sadece kick yapilir
+  punishment-command: "kick {player} &c[AntiCheat] {reason}"
+  
+  # Broadcast mesaji (tum sunucuya duyuru)
+  # true = Ceza alinca herkes gorur
+  # false = Sadece console gorur
+  broadcast-punishment: true
+
+# ============================================
+# NOTLAR:
+# - Tum sureler MILISANIYE cinsindendir (1 saniye = 1000ms)
+# - SAS threshold: 50-100ms arasi onerilir
+# - Rocket threshold: 30-70ms arasi onerilir
+# - Violation decay: 20-60 saniye arasi onerilir
+# - Debug mode SADECE test icin acilmalidir
+# ============================================

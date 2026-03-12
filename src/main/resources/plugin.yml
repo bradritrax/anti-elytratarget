@@ -1,0 +1,57 @@
+# ElytraAntiCheat Plugin Yapilandirmasi
+# Minecraft 1.17.1 - ElytraTarget ve Rocket Macro Korumasi
+
+name: ElytraAntiCheat
+version: '${project.version}'
+main: com.antiacheat.elytra.ElytraAntiCheat
+api-version: 1.17
+author: AntiCheat Developer
+description: 'ElytraTarget ve Rocket Macro hilelerini engelleyen ProtocolLib tabanli koruma modulu'
+
+# Bagimliliklar (softdepend: baslangicta yuklenmesi zorunlu degil)
+softdepend:
+  - ProtocolLib
+  - ViaVersion
+  - ViaBackwards
+
+# Komutlar
+commands:
+  elytraac:
+    description: ElytraAntiCheat admin komutlari
+    usage: /<command> [status|reset|resetall|reload] [oyuncu]
+    permission: elytraac.admin
+    aliases:
+      - eac
+      - elytraanticheat
+
+# Izinler
+permissions:
+  elytraac.admin:
+    description: Tum ElytraAntiCheat komutlarina erisim
+    default: op
+    children:
+      elytraac.status: true
+      elytraac.reset: true
+      elytraac.resetall: true
+      elytraac.reload: true
+      elytraac.bypass: false
+  
+  elytraac.status:
+    description: Oyuncu durumunu goruntuleme
+    default: op
+  
+  elytraac.reset:
+    description: Oyuncu ihlallerini sifirlama
+    default: op
+  
+  elytraac.resetall:
+    description: Tum ihlalleri sifirlama
+    default: op
+  
+  elytraac.reload:
+    description: Yapilandirmayi yeniden yukleme
+    default: op
+  
+  elytraac.bypass:
+    description: Tespitlerden muaf olma (SADECE TEST ICIN)
+    default: false
